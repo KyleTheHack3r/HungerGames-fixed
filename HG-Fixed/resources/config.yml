@@ -1,6 +1,39 @@
 ---
+####HungerGames Config File####
+##By SavionLegendZzz##
+##WHEN YOU DO HungerGames Remove It Removes Everything Except money, popup-message, and prefix i dont know why tho :P##
+##ITS RECOMMEND NOT TO DO /HungerGames remove unless you mess up##
+##soon money-death message##
+####################################################################################
+prefix: HungerGames
+##the tag/prefix of messages sent to the player
+####################################################################################
+popup-message: HungerGames Plugin By SavionLegendZzz!
+##sent to player on join
+####################################################################################
+money: 25
+##the money a player when they win a match
+####################################################################################
+money-death: 5
+##money player earns on death
+####################################################################################
+last-one-alive: 15
+##earned when player is last one alive
+####################################################################################
+money-kill: 5
+##how much a player earns for killing another player
+####################################################################################
+godTime: 15
+##how long a before players can pvp
+####################################################################################
 endTime: 180
+##how long before the match ends 
+##this has to match up with waitTime!!!
+####################################################################################
 gameTime: 300
+##how long a match is
+####################################################################################
 waitTime: 180
-prefix: NUll (CHANGE THIS IN CONFIG.YML PLEASE)
+##how long to wait before the game can start
+####################################################################################
 ...
