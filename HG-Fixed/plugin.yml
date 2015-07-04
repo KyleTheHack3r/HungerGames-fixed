@@ -1,33 +1,37 @@
 name: HungerGames
 main: HG\Main
-version: "1.4_Final"
+version: "1.6"
 api: [1.0.0]
 load: POSTWORLD
-author: SavionLegendZzz
+soft-depend: "LevelChat, KillRate, MSpawns"
+depend: "ResetChest"
+author: SavionLegendZzz, and MinecrafterPH
 commands:
- hg:
+ HungerGames:
+  alias:
+   hg:
   permission: hg.command.hg
-  description: Commands /hg set|remove|stats|start|reload
-  usage: /hg <set|remove|stats|start|reload>
+  description: HungerGames Plugin Main Command
+  usage: /HungerGames <|set<sign number>|example </hungergames set2>|remove|start|help>
  lobby:
   permission: hg.command.lobby
-  description: back to lobby
-  usage: /lobby
+  description: HungerGames Lobby Command
+  usage: /lobby <telports you back to the lobby>
 permissions:
  hg.*:
-  description: the main permission
+  description: 
   default: op
   children:
    hg.command.*:
-    description: use commands in plugin
+    description: 
     default: op
     children:
      hg.command.lobby:
-      description: back to lobby
+      description: HungerGames Lobby Command
       default: true
-     hg.command.fsg:
-      description: set SurvivalGame
+     hg.command.set:
+      description: set the status sign
       default: op
    hg.touch.startgame:
-    description: click the sign and join the game
+    description: 
     default: true
