@@ -12,7 +12,7 @@ commands:
    hg:
   permission: hg.command.hg
   description: HungerGames Plugin Main Command
-  usage: /HungerGames <|set<sign number>|example </hungergames set2>|remove|start|help>
+  usage: /HungerGames <|set|remove|help>
  lobby:
   permission: hg.command.lobby
   description: HungerGames Lobby Command
