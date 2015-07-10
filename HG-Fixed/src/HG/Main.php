@@ -4,7 +4,7 @@ namespace HG;
 // DONE:also create a diiffrenet function for when a player wins a match to earn $$$
 // TODO: add broadcaster? with custom messages in configs leave message in comments if good idea :P
 // 25% DONE: set up more matches (gonna take some time :P 2 atm 5 is gonna be the max maybe...?)
-// TODO: make a video on how to setup hungergames
+// TODO: make a video on how to setup HungerGames
 // BTW this may be a lil messy :P trying to figure out a different way but when I try them they don't work
 //setup my moneyranks plugin somewhere in here?
 
@@ -55,6 +55,8 @@ class Main extends PluginBase implements Listener
 		$this->config = $this->getConfig();
 		$this->getServer()->getPluginManager()->registerEvents($this,$this);
 		$this->getServer()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this,"time"]),20);
+		 	//$this->getServer()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this,"popup"]),10);
+	
 		if($this->config->exists("pos25"))
 		{
 			$this->sign=$this->config->get("sign");
@@ -183,7 +185,7 @@ class Main extends PluginBase implements Listener
 		    $sender->sendMessage(TextFormat::LIGHT_PURPLE."=+=+=".TextFormat::YELLOW."How To Setup A HungerGames Match!".TextFormat::LIGHT_PURPLE."=+=+=");
 			$sender->sendMessage(
 TextFormat::LIGHT_PURPLE."
-Step 1:".TextFormat::AQUA."Do /hungergames set(1 or 2 depends if you set up a match already)"
+Step 1:".TextFormat::AQUA."Do /HungerGames set(1 or 2 depends if you set up a match already)"
 .TextFormat::LIGHT_PURPLE."
 Step 2:".TextFormat::AQUA."Place A Sign Then Tap On It"
 .TextFormat::LIGHT_PURPLE."
@@ -193,13 +195,13 @@ Step 4:".TextFormat::AQUA."Set The Spawnpoints By Taping On Them(You Have To Tap
 .TextFormat::LIGHT_PURPLE."
 Step 5:".TextFormat::AQUA."Tap The Spot Where pos25 Will Happen (Preferably The Middle Of The pos25 Spot!)"
 .TextFormat::LIGHT_PURPLE."
-Step 6:".TextFormat::AQUA."Your Done You Can Start A Match Now, Re-do All These Step But Use /hungergames set2");
+Step 6:".TextFormat::AQUA."Your Done You Can Start A Match Now, Re-do All These Step But Use /HungerGames set2");
 $hg = $this->getServer()->getPluginManager();
 	$this->hg = $hg->getPlugin("HungerGames");
 $this->getServer()->getLogger()->info(TextFormat::GOLD."This Server Is Using ".$this->hg->getName(). TextFormat::GOLD. " v".$this->hg->getDescription()->getVersion()." By SavionLegendZzz!");
 			break;
 				/*case "stat":
-     if($sender->hasPermission("hungergames.command.stat")){
+     if($sender->hasPermission("HungerGames.command.stat")){
                                         		if(!(isset($args[1]))){
                                         			$player = $sender->getName();
 								$deaths = $this->stats->get($player)[1];
@@ -285,14 +287,14 @@ $this->getServer()->getLogger()->info(TextFormat::GOLD."This Server Is Using ".$
 			return;
 		}
 		$block=$event->getBlock();
-		if($this->PlayerIsInGame($event->getPlayer()->getName()) || $block->getLevel()==$this->level)
+		if($this->PlayerIsInGame($event->getPlayer()->getName()))
 		{
 			if(!$event->getPlayer()->isOp())
 			{
 				$event->setCancelled();
 			}
 		}
-		unset($block,$event);
+		unset($event);
 	}
 	public function onMove(PlayerMoveEvent $event)
 	{
@@ -374,7 +376,7 @@ $this->getServer()->getLogger()->info(TextFormat::GOLD."This Server Is Using ".$
 		}
 		if(!$this->signlevel instanceof Level)
 		{
-			$level=$this->getServer()->getLevelByName($this->config->get("pos1")["level"]);
+			$this->level=$this->getServer()->getLevelByName($this->config->get("pos1")["level"]);
 			$this->signlevel=$this->getServer()->getLevelByName($this->config->get("sign")["level"]);
 			if(!$this->signlevel instanceof Level)
 			{
@@ -387,11 +389,9 @@ $this->getServer()->getLogger()->info(TextFormat::GOLD."This Server Is Using ".$
 			$i=0;
 			foreach($this->players as $key=>$val)
 			{
-		$level=$this->getServer()->getLevelByName($this->config->get("pos1")["level"]);	
 				$i++;
 				$p=$this->getServer()->getPlayer($val["id"]);
 				//echo($i."\n");
-				$p->setLevel($level);
 				eval("\$p->teleport(\$this->pos".$i.");");
 				unset($p);
 			}
@@ -418,23 +418,23 @@ $this->getServer()->getLogger()->info(TextFormat::GOLD."This Server Is Using ".$
 			case 10:
 			//case 20:
 			case 30:
-				Server::getInstance()->broadcastMessage("[HungerGames]The Game Will Start In ".$this->lastTime." Seconds!");
+Server::getInstance()->broadcastMessage("[HungerGames] The Game Will Start In ".$this->lastTime." seconds");
 				break;
 			case 60:
-				 				Server::getInstance()->broadcastMessage (" [HungerGames] The game will start in 1:00");
+Server::getInstance()->broadcastMessage(" [HungerGames] The Game Will Start In 1:00");
 				break;
 			case 90:
-				 				Server::getInstance()->broadcastMessage ("[HungerGames] The game will start in 1:30");
+Server::getInstance()->broadcastMessage("[HungerGames] The Game Will Start In 1:30");
 				break;
 			case 120:
-				 				Server::getInstance()->broadcastMessage ("[HungerGames] The game will start in 2:00");
+Server::getInstance()->broadcastMessage("[HungerGames] The game will start in two minutes");
 				break;
 			case 150:
-				 				Server::getInstance()->broadcastMessage ("[HungerGames] The game will start in 2:30");
+Server::getInstance()->broadcastMessage("[HungerGames] The game will start in two minutes thirty seconds");
 				break;
 			case 0:
 				$this->gameStatus=2;
-				 				Server::getInstance()->broadcastMessage ("[HungerGames] The Games Have Begun!");
+Server::getInstance()->broadcastMessage("[HungerGames] The Games Have Begun!");
 				$this->resetChest();
 				foreach($this->players as $key=>$val)
 				{
@@ -452,35 +452,13 @@ $this->getServer()->getLogger()->info(TextFormat::GOLD."This Server Is Using ".$
 			if($this->lastTime<=0)
 			{
 				$this->gameStatus=3;
-				Server::getInstance()->broadcastMessage("Chest Have Reset!");
+Server::getInstance()->broadcastMessage("[HungerGames] You are now longer prohibited");
 				$this->lastTime=$this->gameTime;
 				$this->resetChest();
 			}
 		}
-		if($this->gameStatus==3)
-		{
-			$this->lastTime--;
-			switch($this->lastTime)
-			{
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-			case 10:
-				 				Server::getInstance()->broadcastMessage ("[HungerGames] ".$this->lastTime." Seconds Left Until DM!");
-				break;
-			case 0:
-				 				Server::getInstance()->broadcastMessage ("[HungerGames] DeathMatch Has Begun!");
-				 				break;
-					$p->teleport($this->pos25);
-					unset($p,$pl);
-				}
-				$this->gameStatus=4;
-				$this->lastTime=$this->endTime;
-			}
-		if($this->gameStatus==4)
-		{
+		 		if($this->gameStatus==3)
+		 		{
 			$this->lastTime--;
 			switch($this->lastTime)
 			{
@@ -492,25 +470,68 @@ $this->getServer()->getLogger()->info(TextFormat::GOLD."This Server Is Using ".$
 			case 10:
 			//case 20:
 			case 30:
-				 				Server::getInstance()->broadcastMessage ("[HungerGames] There Are ".$this->lastTime." Seconds Until End Of The Game!");
+				Server::getInstance()->broadcastMessage("[HungerGames] there are ".$this->lastTime."seconds to the end of the game");
 				break;
 			case 0:
-				 				Server::getInstance()->broadcastMessage ("[HungerGames] The Game Has Ended!");
+				Server::getInstance()->broadcastMessage("[HungerGames] The Match Has Ended!");
+				foreach($this->players as $pl)
+				{
+					$p=$this->getServer()->getPlayer($pl["id"]);
 					$p->setLevel($this->signlevel);
 					$p->teleport($this->signlevel->getSpawnLocation());
 					$p->getInventory()->clearAll();
-					$p->setMaxHealth(20);
-					$p->setHealth(20);
+					$p->setMaxHealth(25);
+					$p->setHealth(25);
 					unset($p,$pl);
 				}
 				$this->clearChest();
 				//$this->ClearAllInv();
 				$this->players=array();
+				$this->gameStatus=4;
+				$this->lastTime=0;
+				break;
+			}
+			$this->changeStatusSign();
+		}
+		
+		if($this->gameStatus==4)
+		{
+		//add a new message format =+=+=Match Review=+=+=
+			if(count($this->players)==1)
+			{
+				$money=$this->config->get("money");
+				$moneya=$this->config->get("last-one-alive");
+                $event->getPlayer()->sendMessage(TextFormat::BLUE."+=+=+Match Review+=+=+");
+				$event->getPlayer()->sendMessage(TextFormat::GOLD."+".$money." For Winning The Match!");
+				$event->getPlayer()->sendMessage(TextFormat::GOLD."+".$moneya." For The Last One Alive!");
+				//add random money choice
+				//add how many kills a playergets
+				$this->getServer()->getPluginManager()->getPlugin("EconomyAPI")->addMoney($event->getPlayer()->getName(), $this->config->get("money"));
+		    	$p=$event->getServer()->getPlayer();
+					Server::getInstance()->broadcastMessage(TextFormat::GREEN."[{$this->getConfig()->get("prefix")}]".$p->getName()." won a match!");
+					$p->setLevel($this->signlevel);
+					$p->getInventory()->clearAll();
+					$p->setMaxHealth(20);
+					$p->setHealth(20);
+					$p->teleport($this->signlevel->getSpawnLocation());
+				$this->clearChest();
+				$this->players=array();
 				$this->gameStatus=0;
 				$this->lastTime=0;
+				return;
 			}
-		$this->changeStatusSign();
-	}
+			else if(count($this->players)==0)
+			{
+				$this->gameStatus=0;
+				$this->lastTime=0;
+				$this->clearChest();
+				$this->ClearAllInv();
+				return;
+			}
+			}
+			}
+			
+
 	
 	
 	public function resetChest()
@@ -899,7 +920,7 @@ case 9:
     				{
     					if($inv->getItem($i)->getID()!=0)
     					{
-    						$event->getPlayer()->sendMessage("[{$this->getConfig()->get("prefix")}] Before the game,please put things in your bag to your case");
+    						$event->getPlayer()->sendMessage("[{$this->getConfig()->get("prefix")}] Before the game,pleas clear your inv");
     						return;
     					}
     				}
@@ -916,7 +937,7 @@ case 9:
 				{
 					if(!isset($this->players[$event->getPlayer()->getName()]))
 					{
-						if(count($this->players)>=6)
+						if(count($this->players)>=22)
 						{
 							$event->getPlayer()->sendMessage("[{$this->getConfig()->get("prefix")}] the map is full,no spare place for more");
 							return;
@@ -924,7 +945,7 @@ case 9:
 						$event->getPlayer()->sendMessage("[{$this->getConfig()->get("prefix")}]Player ".$event->getPlayer()->getName()." joined the game");
 						$this->players[$event->getPlayer()->getName()]=array("id"=>$event->getPlayer()->getName());
 						$event->getPlayer()->sendMessage("[{$this->getConfig()->get("prefix")}] joined the game successfully");
-						if($this->gameStatus==0 && count($this->players)>=18)
+						if($this->gameStatus==0 && count($this->players)>=1)
 						{
 							$this->gameStatus=1;
 							$this->lastTime=$this->waitTime;
@@ -1026,50 +1047,15 @@ case 9:
 			}
 		}
 	}
-	public function PlayerLogin(PlayerLoginEvent $event){
+	public function PlayerJoin(PlayerJoinEvent $event){
 	$hg = $this->getServer()->getPluginManager();
 	$player = $event->getPlayer();
-	//$player->sendPopUp("Your Money Is $".$this->getMoney($name));
+	$player->sendPopUp("Your Money Is $".$this->getServer()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($event->getPlayer()->getName()));
 	$this->hg = $hg->getPlugin("HungerGames");
 	$player->sendMessage(TextFormat::GOLD."This Server Is Using ".$this->hg->getName(). TextFormat::GOLD. " v".$this->hg->getDescription()->getVersion()." By SavionLegendZzz!");
 //below is something c0oL	
 	}
-		public function win(){//when a player wins a match
-		if($this->gameStatus==3 && $this->gameStatus==4)
-		//add a new message format =+=+=Match Review=+=+=
-			if(count($this->players)==1)
-			{
-				$money=$this->config->get("money");
-				$moneya=$this->config->get("last-one-alive");
-                $event->getPlayer()->sendMessage(TextFormat::BLUE."+=+=+Match Review+=+=+");
-				$event->getPlayer()->sendMessage(TextFormat::GOLD."+".$money." For Winning The Match!");
-				$event->getPlayer()->sendMessage(TextFormat::GOLD."+".$moneya." For The Last One Alive!");
-				//add random money choice
-				//add how many kills a playergets
-				$this->getServer()->getPluginManager()->getPlugin("EconomyAPI")->addMoney($event->getPlayer()->getName(), $this->config->get("money"));
-				
-		    	$p=$event->getServer()->getPlayer();
-					Server::getInstance()->broadcastMessage(TextFormat::GREEN."[{$this->getConfig()->get("prefix")}]".$p->getName()." won a match!");
-					$p->setLevel($this->signlevel);
-					$p->getInventory()->clearAll();
-					$p->setMaxHealth(20);
-					$p->setHealth(20);
-					$p->teleport($this->signlevel->getSpawnLocation());
-				$this->clearChest();
-				$this->players=array();
-				$this->gameStatus=0;
-				$this->lastTime=0;
-				return;
-			}
-			else if(count($this->players)==0)
-			{
-				$this->gameStatus=0;
-				$this->lastTime=0;
-				$this->clearChest();
-				$this->ClearAllInv();
-				return;
-			}
-		}
+
 	 /* private function addDeath($player){
 		if(!$this->stats->exist($player)){ 
         		$this->stats->set($player, array(1, 0, 0)); 
@@ -1091,6 +1077,13 @@ case 9:
         	}
         	return true;
 	}*/
+public function move(PlayerMoveEvent $event){
+$p=$event->getPlayer();
+$p->sendPopUp("Your Money Is $".$this->getServer()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($p->getName()));
+	
+}
+	
+		
 	public function getMoney($name){
 		return EconomyAPI::getInstance()->myMoney($name);
 	}
@@ -1111,4 +1104,3 @@ case 9:
 			$this->getServer()->getLogger()->notice(TextFormat::RED."[HungerGames] Disabling....");
 	}
 }
-
