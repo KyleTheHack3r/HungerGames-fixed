@@ -7,5 +7,5 @@
 - - ***TODO:*** *Add PopUp Messages For Player Death And A Player Killing Another Player*<br>
 - ***New Feature*** */hg stats*
 - *****IMPORTANT TO CHANGE FILE CONFIGS TURN SERVER OFF THEN CHANGE CONFIGS THEN TURN BACK ON*****
-- ***Download Link [NEW LINK: JUNE,10,2015]: https://www.dropbox.com/s/x70mwmte4hswz6m/HungerGames_v1.4_Final.phar?dl=0***<br>
+- ***HungerGames Download In Releases!!!!***
 - ***Download Link [LINK: JUNE,10,2015]: https://www.dropbox.com/s/rt5zofxk6bcpjs2/ResetChest_v1.0.phar?dl=0***<br>
