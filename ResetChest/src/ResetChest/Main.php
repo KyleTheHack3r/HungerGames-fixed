@@ -24,14 +24,17 @@ class Main extends PluginBase implements CommandExecutor, Listener
 		{
 			self::$obj = $this;
 		}
-		$this->getServer()->getLogger()->info(TextFormat::RED."[RC] Plugin loaded!");
+		$this->getServer()->getLogger()->info(TextFormat::RED."[ResetChest]Plugin loaded!");
         @mkdir($this->getDataFolder());
-        $this->iconfig=new Config($this->getDataFolder()."items.yml", Config::YAML, array());
-        if(!$this->iconfig->exists("items"))
-        {
-        	$this->iconfig->set("items",array(17,0,57,0));
-        	$this->iconfig->save();
+		if(!file_exists($this->getDataFolder() . "chest.yml")) {
+            @mkdir($this->getDataFolder());
+             file_put_contents($this->getDataFolder() . "chest.yml",$this->getResource("chest.yml"));
         }
+		if(!file_exists($this->getDataFolder() . "items.yml")) {
+            @mkdir($this->getDataFolder());
+             file_put_contents($this->getDataFolder() . "items.yml",$this->getResource("items.yml"));
+        }
+        $this->iconfig=new Config($this->getDataFolder()."items.yml", Config::YAML, array());
         $this->items=$this->iconfig->get("items");
         
         $this->config=new Config($this->getDataFolder()."chest.yml", Config::YAML, array());
@@ -105,7 +108,7 @@ class Main extends PluginBase implements CommandExecutor, Listener
         {
         	if($block->getId()!=54)
         	{
-        		$event->getPlayer()->sendMessage("[ResetChest] Please tap a chest");
+        		$event->getPlayer()->sendMessage("[ResetChest]Please tap a chest");
             	unset($event,$block,$key,$val);
             	return;
         	}
@@ -118,7 +121,7 @@ class Main extends PluginBase implements CommandExecutor, Listener
             	{
             		if($val["x"]==$block->getX() && $val["y"]==$block->getY() && $val["z"]==$block->getZ() && $val["level"]==$block->getLevel()->getFolderName())
             		{
-            			$event->getPlayer()->sendMessage("[ResetChest] This chest was in reset list");
+            			$event->getPlayer()->sendMessage("[ResetChest]This chest was added in reset list");
             			unset($event,$block,$key,$val);
             			return;
             		}
@@ -161,7 +164,7 @@ class Main extends PluginBase implements CommandExecutor, Listener
         	{
         		if(!$event->getPlayer()->isOp())
         		{
-        			$event->getPlayer()->sendMessage("[ResetChest] You can't break this chest");
+        			$event->getPlayer()->sendMessage("[ResetChest]You can't break this chest");
         			$event->setCancelled();
         			break;
         		}
