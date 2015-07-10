@@ -5,5 +5,5 @@
 - ***Dependency plugins:*** *ChestRefill*<br>
 - ***You can contribute by forking the repo and making a pull request.***<br>
 - *****IMPORTANT TO CHANGE FILE CONFIGS TURN SERVER OFF THEN CHANGE CONFIGS THEN TURN BACK ON*****
-- ***HungerGames Download In Releases!!!!***
-- ***Download Link [LINK: JUNE,10,2015]: https://www.dropbox.com/s/rt5zofxk6bcpjs2/ResetChest_v1.0.phar?dl=0***<br>
+- ***HungerGames And ResetChest Download In Releases!!!!***
+<br>
