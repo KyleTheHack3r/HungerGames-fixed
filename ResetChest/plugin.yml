@@ -1,19 +1,18 @@
-name: ResetChest
 main: ResetChest\Main
-version: "1.0"
-author: FENGberd
+version: "1.3"
+author: SavionLegendZzz
 api: [1.0.0]
 load: POSTWORLD
 commands:
- cr:
-  permission: FChestReset.command
-  description: Main command
-  usage: /cr <add|remove|reload|reset>
+ ResetChest:
+  permission: rc.command
+  description: ResetChest Main Command
+  usage: /ResetChest <add|remove|reload|reset>
 permissions:
- FChestReset.*:
+ rc.*:
   default: op
   description: Main permission
   children:
-   FChestReset.command.*:
+   rc.command.*:
     default: op
     description: use commands
